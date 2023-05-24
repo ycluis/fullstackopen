@@ -1,0 +1,24 @@
+{
+  "name": "full-stack-open-exercises",
+  "version": "1.0.0",
+  "description": "This repository contains my solutions to the exercises from the Full Stack Open course (https://fullstackopen.com/en/).",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint --fix --ext .js,.jsx ."
+  },
+  "author": "Luis",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.41.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-json-format": "^2.0.1",
+    "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.32.2",
+    "prettier": "^2.8.8"
+  }
+}

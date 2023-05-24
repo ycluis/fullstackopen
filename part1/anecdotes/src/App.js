@@ -1,9 +1,7 @@
 import { useState } from 'react'
 
-const Button = ({text, handleClick}) => {
-  return (
-    <button onClick={handleClick}>{text}</button>
-  )
+const Button = ({ text, handleClick }) => {
+  return <button onClick={handleClick}>{text}</button>
 }
 
 const App = () => {
@@ -15,23 +13,23 @@ const App = () => {
     'Premature optimization is the root of all evil.',
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
-    'The only way to go fast, is to go well.'
+    'The only way to go fast, is to go well.',
   ]
 
   const [selected, setSelected] = useState(0)
-  const [points, setPoints] = useState({0: 0, 1: 0, 2: 0, 3: 0, 4:0, 5:0, 6:0, 7:0})
+  const [points, setPoints] = useState({ 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 })
 
   const voteSelected = () => {
-    const copy = {...points}
+    const copy = { ...points }
     copy[selected] += 1
     setPoints(copy)
   }
 
   const getMostVoted = () => {
-    let votes = Object.values(points)
-    let mostVoted = Math.max(...votes)
+    const votes = Object.values(points)
+    const mostVoted = Math.max(...votes)
 
-    return Object.keys(points).find(key => points[key] === mostVoted)
+    return Object.keys(points).find((key) => points[key] === mostVoted)
   }
 
   return (
@@ -40,8 +38,8 @@ const App = () => {
       {anecdotes[selected]}
       <p>has {points[selected]} votes</p>
       <div>
-        <Button text="vote" handleClick={voteSelected}/>
-        <Button text="next anecdote" handleClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))}/>
+        <Button text="vote" handleClick={voteSelected} />
+        <Button text="next anecdote" handleClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))} />
       </div>
       <div>
         <h3>Anecdote with most votes</h3>
