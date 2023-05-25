@@ -1,7 +1,9 @@
+import './style/index.css'
 import { useState, useEffect } from 'react'
 import Filter from './Filter'
 import PersonForm from './PersonForm'
 import Person from './Person'
+import Notification from './Notification'
 import phonebookService from './services/phonebook'
 
 const App = () => {
@@ -15,6 +17,13 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [msg, setMsg] = useState(null)
+
+  const notificationTiming = () => {
+    setTimeout(() => {
+      setMsg(null)
+    }, 3000)
+  }
 
   const addPerson = (e) => {
     e.preventDefault()
@@ -29,6 +38,9 @@ const App = () => {
         if (window.confirm(`${isExist.name} is already added to phonebook, replace the old number with a new one?`)) {
           const res = phonebookService.updatePhonebook({ name: isExist.name, number: newNumber, id: isExist.id })
           res.then((resData) => setPersons(persons.map((person) => (person.id === resData.id ? resData : person))))
+
+          setMsg({ status: 'success', message: `Updated ${isExist.name}` })
+          notificationTiming()
         }
       } else {
         const res = phonebookService.createNew({
@@ -37,6 +49,9 @@ const App = () => {
           id: persons.length > 0 ? persons[persons.length - 1].id + 1 : 1,
         })
         res.then((resData) => setPersons(persons.concat(resData)))
+
+        setMsg({ status: 'success', message: `Added ${newName}` })
+        notificationTiming()
       }
 
       setFilter('')
@@ -60,17 +75,25 @@ const App = () => {
   const handleDelete = (person) => {
     if (window.confirm(`Delete ${person.name}?`)) {
       const res = phonebookService.deletePhonebook(person.id)
-      res.then((resData) => {
-        if (resData.status === 200) {
+      res
+        .then((resData) => {
+          if (resData.status === 200) {
+            setPersons(persons.filter((personData) => personData.id !== person.id))
+          }
+        })
+        .catch(() => {
+          setMsg({ status: 'error', message: `Information of ${person.name} has already been removed from server` })
+          notificationTiming()
           setPersons(persons.filter((personData) => personData.id !== person.id))
-        }
-      })
+        })
     }
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification msg={msg} />
 
       <Filter filter={filter} handleChange={handleFilterChange} />
 
