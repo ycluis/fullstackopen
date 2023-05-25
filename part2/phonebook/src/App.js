@@ -1,23 +1,17 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from './Filter'
 import PersonForm from './PersonForm'
 import Person from './Person'
+import phonebookService from './services/phonebook'
 
 const App = () => {
   useEffect(() => {
-    axios.get('http://localhost:5001/persons').then((res) => {
-      console.log('Hi')
-      setPersons(res.data)
+    phonebookService.getAll().then((res) => {
+      setPersons(res)
     })
   }, [])
 
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 },
-  ])
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
@@ -28,15 +22,21 @@ const App = () => {
     if (!newName || !newNumber) {
       alert(`Please fill in all the fields`)
     } else {
-      const newPersons = [...persons]
+      const isExist = persons.find((person) => person.name.toLowerCase() === newName.toLowerCase())
 
-      const isExist = persons.filter((person) => person.name === newName)
-
-      if (isExist.length > 0) {
-        alert(`${newName} is already added to phonebook`)
+      if (isExist) {
+        // alert(`${newName} is already added to phonebook`)
+        if (window.confirm(`${isExist.name} is already added to phonebook, replace the old number with a new one?`)) {
+          const res = phonebookService.updatePhonebook({ name: isExist.name, number: newNumber, id: isExist.id })
+          res.then((resData) => setPersons(persons.map((person) => (person.id === resData.id ? resData : person))))
+        }
       } else {
-        newPersons.push({ name: newName, number: newNumber, id: newPersons[newPersons.length - 1].id + 1 })
-        setPersons(newPersons)
+        const res = phonebookService.createNew({
+          name: newName,
+          number: newNumber,
+          id: persons.length > 0 ? persons[persons.length - 1].id + 1 : 1,
+        })
+        res.then((resData) => setPersons(persons.concat(resData)))
       }
 
       setFilter('')
@@ -57,6 +57,17 @@ const App = () => {
     setFilter(e.target.value)
   }
 
+  const handleDelete = (person) => {
+    if (window.confirm(`Delete ${person.name}?`)) {
+      const res = phonebookService.deletePhonebook(person.id)
+      res.then((resData) => {
+        if (resData.status === 200) {
+          setPersons(persons.filter((personData) => personData.id !== person.id))
+        }
+      })
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -75,7 +86,7 @@ const App = () => {
 
       <h3>Numbers</h3>
 
-      <Person filter={filter} persons={persons} />
+      <Person filter={filter} persons={persons} handleDelete={handleDelete} />
     </div>
   )
 }
