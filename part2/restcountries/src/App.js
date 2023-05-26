@@ -25,7 +25,19 @@ const App = () => {
     <div>
       find countries: <input value={countryField} onChange={handleCountryChange} />
       <div>
-        {result.length > 0 ? (
+        {result.length === 1 ? (
+          <div>
+            <h2>{result[0].name.common}</h2>
+            <p>capital {result[0].capital[0]}</p>
+            <p>area {result[0].area}</p>
+            <ul>
+              {Object.keys(result[0].languages).map((language) => (
+                <li key={language}>{result[0].languages[language]}</li>
+              ))}
+            </ul>
+            <img src={result[0].flags.png} alt="country flag" />
+          </div>
+        ) : result.length > 0 ? (
           result.map((country) => <p key={country.cca2}>{country.name.common}</p>)
         ) : countryField !== '' ? (
           <p>Too many matches, specify another filter</p>
