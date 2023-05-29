@@ -77,7 +77,7 @@ const App = () => {
       const res = phonebookService.deletePhonebook(person.id)
       res
         .then((resData) => {
-          if (resData.status === 200) {
+          if (resData.status === 204) {
             setPersons(persons.filter((personData) => personData.id !== person.id))
           }
         })

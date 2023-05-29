@@ -1,7 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 
 app.use(express.json())
 morgan.token('body', (req, res) => JSON.stringify(req.body))
@@ -42,6 +42,8 @@ let persons = [
     number: '39-23-6423122',
   },
 ]
+
+app.use(express.static('build'))
 
 app.get('/info', (req, res) => {
   const ppl = [...persons]

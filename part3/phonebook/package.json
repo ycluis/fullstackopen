@@ -6,11 +6,15 @@
   "scripts": {
     "start": "node index",
     "dev": "nodemon index",
-    "lint": "eslint --fix --ext .js,.jsx ."
+    "lint": "eslint --fix --ext .js,.jsx .",
+    "build:ui": "rm -rf build && cd ../../part2/phonebook && npm run build && cp -pr build ../../part3/phonebook",
+    "deploy": "fly deploy",
+    "deploy:all": "npm run build:ui && cd ../../part3/phonebook && npm run deploy"
   },
   "author": "Luis",
   "license": "ISC",
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.2.7",
     "eslint": "^8.41.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-standard": "^17.0.0",
