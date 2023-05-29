@@ -48,9 +48,16 @@ const App = () => {
           number: newNumber,
           id: persons.length > 0 ? persons[persons.length - 1].id + 1 : 1,
         })
-        res.then((resData) => setPersons(persons.concat(resData)))
+        res
+          .then((resData) => {
+            setPersons(persons.concat(resData))
+            setMsg({ status: 'success', message: `Added ${newName}` })
+          })
+          .catch((err) => {
+            console.log(err.response.data.error)
+            setMsg({ status: 'error', message: err.response.data.error })
+          })
 
-        setMsg({ status: 'success', message: `Added ${newName}` })
         notificationTiming()
       }
 

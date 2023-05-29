@@ -78,18 +78,22 @@ app.delete('/api/persons/:id', (req, res, next) => {
 app.post('/api/persons', (req, res, next) => {
   const { name, number } = req.body
 
-  if (!name || !number) {
-    return res.status(400).json({ error: 'Please fill in all the fields' })
-  }
-
   const newPerson = new Phonebook({ name, number })
 
-  newPerson
-    .save()
-    .then((savedPerson) => res.status(201).json(savedPerson))
-    .catch((err) => {
-      next(err)
-    })
+  Phonebook.findOne({ name }).then((person) => {
+    if (person) {
+      Phonebook.findOneAndUpdate({ name }, { number }, { new: true })
+        .then((updatedPerson) => res.status(200).json(updatedPerson))
+        .catch((err) => next(err))
+    } else {
+      newPerson
+        .save()
+        .then((savedPerson) => res.status(201).json(savedPerson))
+        .catch((err) => {
+          next(err)
+        })
+    }
+  })
 })
 
 app.put('/api/persons/:id', (req, res, next) => {
@@ -98,7 +102,7 @@ app.put('/api/persons/:id', (req, res, next) => {
     return res.status(400).json({ msg: 'Please fill in all the fields' })
   }
   const newPerson = { name, number }
-  Phonebook.findByIdAndUpdate(req.params.id, newPerson, { new: true })
+  Phonebook.findByIdAndUpdate(req.params.id, newPerson, { new: true, runValidators: true, context: 'query' })
     .then((updatedPhonebook) => res.status(200).json(updatedPhonebook))
     .catch((err) => next(err))
 })
