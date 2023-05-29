@@ -1,5 +1,8 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
+const Phonebook = require('./models/phonebook')
+
 const app = express()
 const PORT = process.env.PORT || 3001
 
@@ -20,57 +23,64 @@ app.use(
   }),
 )
 
-let persons = [
-  {
-    id: 1,
-    name: 'Arto Hellas',
-    number: '040-123456',
-  },
-  {
-    id: 2,
-    name: 'Ada Lovelace',
-    number: '39-44-5323523',
-  },
-  {
-    id: 3,
-    name: 'Dan Abramov',
-    number: '12-43-234345',
-  },
-  {
-    id: 4,
-    name: 'Mary Poppendieck',
-    number: '39-23-6423122',
-  },
-]
+// const persons = [
+//   {
+//     id: 1,
+//     name: 'Arto Hellas',
+//     number: '040-123456',
+//   },
+//   {
+//     id: 2,
+//     name: 'Ada Lovelace',
+//     number: '39-44-5323523',
+//   },
+//   {
+//     id: 3,
+//     name: 'Dan Abramov',
+//     number: '12-43-234345',
+//   },
+//   {
+//     id: 4,
+//     name: 'Mary Poppendieck',
+//     number: '39-23-6423122',
+//   },
+// ]
 
 app.use(express.static('build'))
 
 app.get('/info', (req, res) => {
-  const ppl = [...persons]
-  res.status(200).type('html').send(`<p>Phonebook has info for ${ppl.length}</p><br>${new Date()}`)
+  Phonebook.count().then((count) =>
+    res.status(200).type('html').send(`<p>Phonebook has info for ${count}</p><br>${new Date()}`),
+  )
 })
 
 app.get('/api/persons', (req, res) => {
-  res.status(200).json(persons)
+  Phonebook.find({}).then((personData) => {
+    res.status(200).json(personData)
+  })
 })
 
 app.get('/api/persons/:id', (req, res) => {
-  const person = persons.find((person) => person.id === +req.params.id)
-  if (person) {
-    return res.status(200).json(person)
-  } else {
-    return res.status(404).json({ message: 'Person not found' })
-  }
+  const person = Phonebook.findById(req.params.id)
+
+  person.then((personData) => {
+    if (!personData) {
+      return res.status(404).json({ error: 'Person not found' })
+    }
+
+    return res.status(200).json(personData)
+  })
 })
 
 app.delete('/api/persons/:id', (req, res) => {
-  const person = persons.find((person) => person.id === +req.params.id)
-  if (!person) {
-    return res.status(404).json({ message: 'Person not found' })
-  } else {
-    persons = persons.filter((person) => person.id !== +req.params.id)
-    return res.status(204).end()
-  }
+  const person = Phonebook.findById(req.params.id)
+  person.then((personData) => {
+    if (!personData) {
+      return res.status(404).json({ message: 'Person not found' })
+    } else {
+      Phonebook.findByIdAndDelete(req.params.id).then(() => res.status(204).end())
+    }
+  })
 })
 
 app.post('/api/persons', (req, res) => {
@@ -80,14 +90,13 @@ app.post('/api/persons', (req, res) => {
     return res.status(400).json({ error: 'Please fill in all the fields' })
   }
 
-  if (persons.find((person) => person.name.toLowerCase() === name.toLowerCase())) {
-    return res.status(400).json({ error: 'name must be unique' })
-  }
+  // if (persons.find((person) => person.name.toLowerCase() === name.toLowerCase())) {
+  //   return res.status(400).json({ error: 'name must be unique' })
+  // }
 
-  const newPerson = { id: Math.floor(Math.random() * 100), name, number }
+  const newPerson = new Phonebook({ name, number })
 
-  persons = persons.concat(newPerson)
-  res.status(201).json(newPerson)
+  newPerson.save().then((savedPerson) => res.status(201).json(savedPerson))
 })
 
 app.listen(PORT, () => console.log(`Server starting on port ${PORT}`))
