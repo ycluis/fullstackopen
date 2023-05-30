@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Absalom, Absalom!",
+  "author": "William Faulkner",
+  "url": "https://www.thriftbooks.com/w/absalom-absalom-by-william-faulkner/249203/?clickref=1100lwNWFkX6",
+  "likes": 100
+}
