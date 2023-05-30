@@ -37,7 +37,12 @@ const App = () => {
         // alert(`${newName} is already added to phonebook`)
         if (window.confirm(`${isExist.name} is already added to phonebook, replace the old number with a new one?`)) {
           const res = phonebookService.updatePhonebook({ name: isExist.name, number: newNumber, id: isExist.id })
-          res.then((resData) => setPersons(persons.map((person) => (person.id === resData.id ? resData : person))))
+          res
+            .then((resData) => setPersons(persons.map((person) => (person.id === resData.id ? resData : person))))
+            .catch((err) => {
+              console.log(err.response.data.error)
+              setMsg({ status: 'error', message: err.response.data.error })
+            })
 
           setMsg({ status: 'success', message: `Updated ${isExist.name}` })
           notificationTiming()

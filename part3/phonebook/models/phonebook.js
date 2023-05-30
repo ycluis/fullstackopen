@@ -1,18 +1,5 @@
 const mongoose = require('mongoose')
 
-mongoose.set('strictQuery', false)
-
-console.log(`Connecting to ${process.env.MONGO_URI}`)
-
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then((res) => {
-    console.log('Connected to MongoDB')
-  })
-  .catch((err) => {
-    console.log('Error connecting to MongoDB: ', err.message)
-  })
-
 const phonebookSchema = new mongoose.Schema({
   name: { type: String, required: true, minLength: 3 },
   number: {
