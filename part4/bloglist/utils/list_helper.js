@@ -106,6 +106,26 @@ const initialBlog = () => {
   ]
 }
 
+const initialUser = () => {
+  return [
+    {
+      username: 'michael.chan',
+      name: 'Michael Chan',
+      password: 'michael123',
+    },
+    {
+      username: 'john.doe',
+      name: 'John Doe',
+      password: 'johndoe123',
+    },
+    {
+      username: 'steve.smith',
+      name: 'Steve Smith',
+      password: 'stevesmith123',
+    },
+  ]
+}
+
 module.exports = {
   dummy,
   totalLikes,
@@ -113,4 +133,5 @@ module.exports = {
   mostBlogs,
   mostLikes,
   initialBlog,
+  initialUser,
 }
