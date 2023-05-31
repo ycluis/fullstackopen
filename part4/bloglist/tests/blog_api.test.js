@@ -84,6 +84,39 @@ test('response with 400 if missing properties', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
+test('delete blog', async () => {
+  const blogs = await api.get('/api/blogs')
+  const lastBlogId = blogs.body[blogs.body.length - 1].id
+
+  await api.delete(`/api/blogs/${lastBlogId}`).expect(204)
+
+  const blogsAfterDeleted = await api.get('/api/blogs')
+
+  expect(blogsAfterDeleted.body).toHaveLength(initialBlog().length - 1)
+})
+
+test('update blog', async () => {
+  const blogs = await api.get('/api/blogs')
+  const lastBlog = blogs.body[blogs.body.length - 1]
+
+  const updatedBlog = {
+    ...lastBlog,
+    title: 'Updated blog title',
+  }
+
+  await api
+    .put(`/api/blogs/${lastBlog.id}`)
+    .send(updatedBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAfterUpdated = await api.get('/api/blogs')
+  const title = blogsAfterUpdated.body.map((blog) => blog.title)
+
+  expect(blogs.body).toHaveLength(initialBlog().length)
+  expect(title).toContain('Updated blog title')
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })

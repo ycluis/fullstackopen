@@ -27,4 +27,22 @@ blogRouter.post('/', async (req, res, next) => {
   }
 })
 
+blogRouter.put('/:id', async (req, res, next) => {
+  try {
+    await Blog.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true, context: 'query' })
+    res.status(200).json(req.body)
+  } catch (err) {
+    next(err)
+  }
+})
+
+blogRouter.delete('/:id', async (req, res, next) => {
+  try {
+    await Blog.findByIdAndDelete(req.params.id)
+    res.status(204).end()
+  } catch (err) {
+    next(err)
+  }
+})
+
 module.exports = blogRouter
