@@ -3,6 +3,7 @@ const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
 const config = require('./utils/config')
+const tokenHandler = require('./middlewares/tokenHandler')
 const errorHandler = require('./middlewares/errorHandler')
 
 app.use(express.json())
@@ -19,8 +20,10 @@ mongoose
     console.log('Error connecting to MongoDB: ', err.message)
   })
 
+app.use(tokenHandler)
 app.use('/api/blogs', require('./controllers/blogs'))
 app.use('/api/users', require('./controllers/users'))
+app.use('/api/login', require('./controllers/login'))
 app.use(errorHandler)
 
 module.exports = app

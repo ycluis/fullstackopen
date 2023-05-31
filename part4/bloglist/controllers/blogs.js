@@ -13,9 +13,13 @@ blogRouter.get('/', async (req, res, next) => {
 
 blogRouter.post('/', async (req, res, next) => {
   try {
-    const { title, author, url, likes, userId } = req.body
+    const { title, author, url, likes } = req.body
 
-    const user = await User.findById(userId)
+    if (!req.token) {
+      return res.status(401).json({ error: 'token invalid' })
+    }
+
+    const user = await User.findById(req.token)
 
     const blog = new Blog({
       title,
