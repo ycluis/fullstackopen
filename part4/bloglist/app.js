@@ -3,6 +3,7 @@ const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
 const config = require('./utils/config')
+const userIdenHandler = require('./middlewares/userIdenHandler')
 const tokenHandler = require('./middlewares/tokenHandler')
 const errorHandler = require('./middlewares/errorHandler')
 
@@ -21,7 +22,7 @@ mongoose
   })
 
 app.use(tokenHandler)
-app.use('/api/blogs', require('./controllers/blogs'))
+app.use('/api/blogs', userIdenHandler, require('./controllers/blogs'))
 app.use('/api/users', require('./controllers/users'))
 app.use('/api/login', require('./controllers/login'))
 app.use(errorHandler)
