@@ -44,8 +44,29 @@ blogRouter.post('/', async (req, res, next) => {
 
 blogRouter.put('/:id', async (req, res, next) => {
   try {
-    await Blog.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true, context: 'query' })
-    res.status(200).json(req.body)
+    if (!req.token) {
+      return res.status(401).json({ error: 'Unauthorized' })
+    }
+
+    // user from userIdenHandler middleware
+    // console.log(req.user)
+
+    const blog = await Blog.findById(req.params.id)
+
+    if (!blog) {
+      return res.status(404).json({ error: 'Resource not found' })
+    }
+
+    if (blog.user.toString() !== req.token) {
+      return res.status(401).json({ error: 'Unauthorized' })
+    }
+
+    const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+      context: 'query',
+    })
+    res.status(200).json(updatedBlog)
   } catch (err) {
     next(err)
   }
@@ -57,7 +78,8 @@ blogRouter.delete('/:id', async (req, res, next) => {
       return res.status(401).json({ error: 'Unauthorized' })
     }
 
-    console.log(req.user) // user from userIdenHandler middleware
+    // user from userIdenHandler middleware
+    // console.log(req.user)
 
     const blog = await Blog.findById(req.params.id)
 
