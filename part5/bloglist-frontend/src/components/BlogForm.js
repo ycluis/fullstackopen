@@ -1,4 +1,25 @@
-const createBlogForm = ({ handleBlogSubmit, blogform, handleFormFieldChg }) => {
+import { useState } from 'react'
+
+const BlogForm = ({ submitNewBlog }) => {
+  const [blogform, setBlogform] = useState({ title: '', author: '', url: '' })
+
+  const handleBlogSubmit = async (e) => {
+    e.preventDefault()
+    submitNewBlog(blogform)
+    clearFormField()
+  }
+
+  const handleFormFieldChg = (e) => {
+    setBlogform({
+      ...blogform,
+      [e.target.name]: e.target.value,
+    })
+  }
+
+  const clearFormField = () => {
+    setBlogform({ title: '', author: '', url: '' })
+  }
+
   return (
     <form onSubmit={handleBlogSubmit}>
       <div>
@@ -18,4 +39,4 @@ const createBlogForm = ({ handleBlogSubmit, blogform, handleFormFieldChg }) => {
   )
 }
 
-export default createBlogForm
+export default BlogForm

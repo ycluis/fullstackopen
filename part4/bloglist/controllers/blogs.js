@@ -4,7 +4,8 @@ const User = require('../models/user')
 
 blogRouter.get('/', async (req, res, next) => {
   try {
-    const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+    // const blogs = await Blog.find({}).populate('user', { username: 1, name: 1, id: 1 })
+    const blogs = await Blog.find({})
     res.status(200).json(blogs)
   } catch (err) {
     next(err)
@@ -15,7 +16,7 @@ blogRouter.post('/', async (req, res, next) => {
   try {
     const { title, author, url, likes } = req.body
 
-    console.log(req.user) // user from userIdenHandler middleware
+    // console.log(req.user) // user from userIdenHandler middleware
 
     if (!req.token) {
       return res.status(401).json({ error: 'token invalid' })
@@ -61,7 +62,12 @@ blogRouter.put('/:id', async (req, res, next) => {
       return res.status(401).json({ error: 'Unauthorized' })
     }
 
-    const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, req.body, {
+    const newObj = {
+      ...req.body,
+      user: req.user._id,
+    }
+
+    const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, newObj, {
       new: true,
       runValidators: true,
       context: 'query',
