@@ -1,4 +1,5 @@
 import { useState, forwardRef, useImperativeHandle } from 'react'
+import PropTypes from 'prop-types'
 
 const Toggle = forwardRef((props, refs) => {
   const [loginVisible, setLoginVisible] = useState(false)
@@ -26,5 +27,9 @@ const Toggle = forwardRef((props, refs) => {
     </>
   )
 })
+
+Toggle.propTypes = {
+  props: PropTypes.object,
+}
 
 export default Toggle
