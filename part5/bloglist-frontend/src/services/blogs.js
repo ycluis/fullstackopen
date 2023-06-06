@@ -6,9 +6,9 @@ const setToken = (newToken) => {
   token = `bearer ${newToken}`
 }
 
-const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then((response) => response.data)
+const getAllBlog = async () => {
+  const res = await axios.get(baseUrl)
+  return res
 }
 
 const createNewBlog = async (newObject) => {
@@ -45,4 +45,4 @@ const deleteBlog = async (blog) => {
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { setToken, getAll, createNewBlog, updateBlog, deleteBlog }
+export default { setToken, getAllBlog, createNewBlog, updateBlog, deleteBlog }

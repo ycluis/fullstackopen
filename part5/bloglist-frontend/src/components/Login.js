@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types'
 
-const Login = ({ username, password, handleUsernameChg, handlePasswordChg, handleLogin }) => {
+const Login = ({ login, handleLoginFieldChange, handleLogin }) => {
   return (
     <form onSubmit={handleLogin}>
       <div>
         username
-        <input type="text" value={username} name="Username" onChange={handleUsernameChg} />
+        <input type="text" value={login.username} name="username" onChange={handleLoginFieldChange} />
       </div>
       <div>
         password
-        <input type="password" value={password} name="Password" onChange={handlePasswordChg} />
+        <input type="password" value={login.password} name="password" onChange={handleLoginFieldChange} />
       </div>
       <button type="submit">login</button>
     </form>
@@ -17,10 +17,8 @@ const Login = ({ username, password, handleUsernameChg, handlePasswordChg, handl
 }
 
 Login.propTypes = {
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  handleUsernameChg: PropTypes.func.isRequired,
-  handlePasswordChg: PropTypes.func.isRequired,
+  login: PropTypes.object.isRequired,
+  handleLoginFieldChange: PropTypes.func.isRequired,
   handleLogin: PropTypes.func.isRequired,
 }
 

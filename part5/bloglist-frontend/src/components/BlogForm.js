@@ -10,7 +10,7 @@ const BlogForm = ({ submitNewBlog }) => {
     clearFormField()
   }
 
-  const handleFormFieldChg = (e) => {
+  const handleFormFieldChange = (e) => {
     setBlogform({
       ...blogform,
       [e.target.name]: e.target.value,
@@ -25,15 +25,15 @@ const BlogForm = ({ submitNewBlog }) => {
     <form onSubmit={handleBlogSubmit}>
       <div>
         title
-        <input type="text" value={blogform.title} name="title" onChange={handleFormFieldChg} />
+        <input type="text" value={blogform.title} name="title" onChange={handleFormFieldChange} />
       </div>
       <div>
         author
-        <input type="text" value={blogform.author} name="author" onChange={handleFormFieldChg} />
+        <input type="text" value={blogform.author} name="author" onChange={handleFormFieldChange} />
       </div>
       <div>
         url
-        <input type="text" value={blogform.url} name="url" onChange={handleFormFieldChg} />
+        <input type="text" value={blogform.url} name="url" onChange={handleFormFieldChange} />
       </div>
       <button type="submit">create</button>
     </form>

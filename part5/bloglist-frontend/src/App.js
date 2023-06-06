@@ -12,15 +12,18 @@ const App = () => {
   const [msg, setMsg] = useState(null)
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
+  const [login, setLogin] = useState({ username: '', password: '' })
   // eslint-disable-next-line no-unused-vars
   const [token, setToken] = useState(null)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
 
   const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
+    const fetchAllBlogs = async () => {
+      const blogs = await blogService.getAllBlog()
+      setBlogs(blogs.data)
+    }
+    fetchAllBlogs()
   }, [])
 
   useEffect(() => {
@@ -33,27 +36,44 @@ const App = () => {
     }
   }, [])
 
-  const notificationTiming = () => {
+  const clearNotification = () => {
     setTimeout(() => {
       setMsg(null)
     }, 3000)
+  }
+
+  const clearUserForm = () => {
+    setLogin({ username: '', password: '' })
+  }
+
+  const handleLoginFieldChange = (e) => {
+    const copy = { ...login }
+    setLogin({
+      ...copy,
+      [e.target.name]: e.target.value,
+    })
   }
 
   const handleLogin = async (e) => {
     e.preventDefault()
 
     try {
-      const user = await loginService.login({ username, password })
-      setUser(user)
-      setToken(user.token)
-      blogService.setToken(user.token)
-      window.localStorage.setItem('loggedUser', JSON.stringify(user))
+      if (!login.username || !login.password) {
+        window.alert('Please fill in all the fields')
+      } else {
+        const user = await loginService.login(login)
+        setUser(user)
+        setToken(user.token)
+        blogService.setToken(user.token)
+        window.localStorage.setItem('loggedUser', JSON.stringify(user))
+      }
     } catch (err) {
       console.log(err)
+      clearUserForm()
       setMsg({ status: 'error', message: err.response.data.error })
     }
 
-    notificationTiming()
+    clearNotification()
   }
 
   const handleLogout = () => {
@@ -62,11 +82,6 @@ const App = () => {
     setToken(null)
     blogService.setToken('')
     clearUserForm()
-  }
-
-  const clearUserForm = () => {
-    setUsername('')
-    setPassword('')
   }
 
   const submitNewBlog = async (newBlog) => {
@@ -83,7 +98,7 @@ const App = () => {
       setMsg({ status: 'error', message: err.response.data.error })
     }
 
-    notificationTiming()
+    clearNotification()
   }
 
   const handleLikesPutReq = async (blog) => {
@@ -102,7 +117,7 @@ const App = () => {
       setMsg({ status: 'error', message: err.response.data.error })
     }
 
-    notificationTiming()
+    clearNotification()
   }
 
   const handleDelete = async (blog) => {
@@ -119,35 +134,29 @@ const App = () => {
       }
     }
 
-    notificationTiming()
+    clearNotification()
   }
 
   return (
     <div>
       {!user && (
         <>
-          <h3>log in to application</h3>
+          <h3>Log in to application</h3>
           <Notification msg={msg} />
-          <Toggle label="log in">
-            <Login
-              username={username}
-              password={password}
-              handleUsernameChg={({ target }) => setUsername(target.value)}
-              handlePasswordChg={({ target }) => setPassword(target.value)}
-              handleLogin={handleLogin}
-            />
+          <Toggle label="login">
+            <Login login={login} handleLoginFieldChange={handleLoginFieldChange} handleLogin={handleLogin} />
           </Toggle>
         </>
       )}
 
       {user !== null && (
         <>
-          <h2>blogs</h2>
+          <h2>Blogs</h2>
           <Notification msg={msg} />
           <p>
             {user?.username} logged in <button onClick={handleLogout}>logout</button>
           </p>
-          <Toggle label="new blog" ref={blogFormRef}>
+          <Toggle label="New blog" ref={blogFormRef}>
             <BlogForm submitNewBlog={submitNewBlog} />
           </Toggle>
           <BlogList blogs={blogs} user={user} handleLikesPutReq={handleLikesPutReq} handleDelete={handleDelete} />
