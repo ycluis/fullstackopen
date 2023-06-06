@@ -1,50 +1,47 @@
 import { useState } from 'react'
+import anecdotes from './anecdotes'
 
-const Button = ({ text, handleClick }) => {
-  return <button onClick={handleClick}>{text}</button>
-}
+const Button = ({ text, handleClick }) => <button onClick={handleClick}>{text}</button>
 
 const App = () => {
-  const anecdotes = [
-    'If it hurts, do it more often.',
-    'Adding manpower to a late software project makes it later!',
-    'The first 90 percent of the code accounts for the first 10 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
-    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
-    'Premature optimization is the root of all evil.',
-    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
-    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
-    'The only way to go fast, is to go well.',
-  ]
-
   const [selected, setSelected] = useState(0)
-  const [points, setPoints] = useState({ 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 })
+  const [votes, setVotes] = useState({})
 
   const voteSelected = () => {
-    const copy = { ...points }
-    copy[selected] += 1
-    setPoints(copy)
+    const copy = { ...votes }
+    copy[selected] = copy[selected] ? (copy[selected] += 1) : 1
+    setVotes(copy)
+  }
+
+  const getRandomAnecdote = () => {
+    const random = Math.floor(Math.random() * anecdotes.length)
+    setSelected(random === selected ? Math.floor(Math.random() * anecdotes.length) : random)
   }
 
   const getMostVoted = () => {
-    const votes = Object.values(points)
-    const mostVoted = Math.max(...votes)
+    const voteCount = Object.values(votes)
+    const mostVoted = Math.max(...voteCount)
 
-    return Object.keys(points).find((key) => points[key] === mostVoted)
+    return Object.keys(votes).find((key) => votes[key] === mostVoted)
   }
 
   return (
     <div>
       <h3>Anecdote of the day</h3>
       {anecdotes[selected]}
-      <p>has {points[selected]} votes</p>
+      <p>has {votes[selected] ? votes[selected] : 0} votes</p>
       <div>
         <Button text="vote" handleClick={voteSelected} />
-        <Button text="next anecdote" handleClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))} />
+        <Button text="next anecdote" handleClick={getRandomAnecdote} />
       </div>
       <div>
         <h3>Anecdote with most votes</h3>
-        {anecdotes[getMostVoted()]}
-        <p>has {points[getMostVoted()]} votes</p>
+        {Object.keys(votes).length > 0 && (
+          <>
+            {anecdotes[getMostVoted()]}
+            <p>has {votes[getMostVoted()]} votes</p>
+          </>
+        )}
       </div>
     </div>
   )
