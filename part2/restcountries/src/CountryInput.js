@@ -1,9 +1,7 @@
-const countryInput = ({ countryField, handleCountryChange }) => {
-  return (
-    <>
-      find countries: <input value={countryField} onChange={handleCountryChange} />
-    </>
-  )
-}
+const countryInput = ({ countryField, handleCountryChange }) => (
+  <>
+    find countries: <input value={countryField} onChange={handleCountryChange} />
+  </>
+)
 
 export default countryInput

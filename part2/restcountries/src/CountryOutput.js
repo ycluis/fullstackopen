@@ -1,6 +1,6 @@
 import Weather from './Weather'
 
-const CountryDisplay = ({ selectedCountry, result, countryField, showCountry, weatherData }) => {
+const CountryOutput = ({ countryField, selectedCountry, result, weather, handleShowCountry }) => {
   if (selectedCountry) {
     return (
       <div>
@@ -12,8 +12,8 @@ const CountryDisplay = ({ selectedCountry, result, countryField, showCountry, we
             <li key={language}>{selectedCountry.languages[language]}</li>
           ))}
         </ul>
-        <img src={selectedCountry.flags.png} alt="country flag" />
-        <Weather capital={selectedCountry.capital[0]} weatherData={weatherData} />
+        <img src={selectedCountry.flags.png} alt="flag" />
+        <Weather capital={selectedCountry.capital[0]} weather={weather} />
       </div>
     )
   }
@@ -23,7 +23,9 @@ const CountryDisplay = ({ selectedCountry, result, countryField, showCountry, we
       <p key={country.cca2}>
         {country.name.common}{' '}
         <button
-          onClick={() => showCountry(country.name.common, country.capitalInfo.latlng[0], country.capitalInfo.latlng[1])}
+          onClick={() =>
+            handleShowCountry(country.name.common, country.capitalInfo.latlng[0], country.capitalInfo.latlng[1])
+          }
         >
           show
         </button>
@@ -34,4 +36,4 @@ const CountryDisplay = ({ selectedCountry, result, countryField, showCountry, we
   ) : null
 }
 
-export default CountryDisplay
+export default CountryOutput

@@ -1,29 +1,35 @@
 import { useEffect, useState } from 'react'
-import countriesService from './services/countries'
 import CountryInput from './CountryInput'
-import CountryDisplay from './CountryDisplay'
+import CountryOutput from './CountryOutput'
+
+import countriesService from './services/countries'
 
 const App = () => {
-  const [countryField, setCountryField] = useState('')
-  // eslint-disable-next-line no-unused-vars
   const [countries, setCountries] = useState([])
-  const [result, setResult] = useState([])
+  const [countryField, setCountryField] = useState('')
   const [selectedCountry, setSelectedCountry] = useState(null)
-  const [weatherData, setWeatherData] = useState(null)
+  const [result, setResult] = useState([])
+  const [weather, setWeather] = useState(null)
 
   useEffect(() => {
-    countriesService.getAll().then((res) => setCountries(res))
+    countriesService.getAllCountries().then((res) => setCountries(res))
   }, [])
 
+  const clearState = () => {
+    setSelectedCountry(null)
+    setWeather(null)
+  }
+
   const handleCountryChange = (e) => {
+    clearState()
     setCountryField(e.target.value)
+
     const res = countries.filter((country) => country.name.common.toLowerCase().includes(countryField.toLowerCase()))
+
     if (res.length < 10) {
       setResult(res)
     } else {
       setResult([])
-      setSelectedCountry(null)
-      setWeatherData(null)
     }
   }
 
@@ -34,7 +40,7 @@ const App = () => {
     countriesService
       .getWeather(lat, lon)
       .then((res) => {
-        setWeatherData(res)
+        setWeather(res)
       })
       .catch((err) => console.log(err.response.data.message))
   }
@@ -43,12 +49,12 @@ const App = () => {
     <div>
       <CountryInput countryField={countryField} handleCountryChange={handleCountryChange} />
       <div>
-        <CountryDisplay
+        <CountryOutput
+          countryField={countryField}
           selectedCountry={selectedCountry}
           result={result}
-          countryField={countryField}
-          showCountry={handleShowCountry}
-          weatherData={weatherData}
+          weather={weather}
+          handleShowCountry={handleShowCountry}
         />
       </div>
     </div>

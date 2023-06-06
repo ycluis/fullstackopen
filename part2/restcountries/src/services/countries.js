@@ -2,7 +2,7 @@ import axios from 'axios'
 const baseUrl = 'https://studies.cs.helsinki.fi/restcountries/api/all'
 const openWeatherUrl = 'https://api.openweathermap.org/data/2.5/weather'
 
-const getAll = () => {
+const getAllCountries = () => {
   const req = axios.get(baseUrl)
   return req.then((res) => res.data)
 }
@@ -13,4 +13,4 @@ const getWeather = (lat, lon) => {
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, getWeather }
+export default { getAllCountries, getWeather }
