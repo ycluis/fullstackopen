@@ -16,8 +16,6 @@ blogRouter.post('/', async (req, res, next) => {
   try {
     const { title, author, url, likes } = req.body
 
-    // console.log(req.user) // user from userIdenHandler middleware
-
     if (!req.token) {
       return res.status(401).json({ error: 'token invalid' })
     }
@@ -48,9 +46,6 @@ blogRouter.put('/:id', async (req, res, next) => {
     if (!req.token) {
       return res.status(401).json({ error: 'Unauthorized' })
     }
-
-    // user from userIdenHandler middleware
-    // console.log(req.user)
 
     const blog = await Blog.findById(req.params.id)
 
@@ -83,9 +78,6 @@ blogRouter.delete('/:id', async (req, res, next) => {
     if (!req.token) {
       return res.status(401).json({ error: 'Unauthorized' })
     }
-
-    // user from userIdenHandler middleware
-    // console.log(req.user)
 
     const blog = await Blog.findById(req.params.id)
 
