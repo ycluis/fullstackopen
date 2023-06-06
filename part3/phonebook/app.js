@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const morgan = require('morgan')
 const logger = require('./utils/logger')
 const config = require('./utils/config')
+const Phonebook = require('./models/phonebook')
 const phonebookRouter = require('./controllers/phonebooks')
 const unknowRouteHandler = require('./middlewares/404Handler')
 const errorHandler = require('./middlewares/errorHandler')
@@ -43,6 +44,13 @@ app.use(
 
 app.use(express.static('build'))
 app.use('/api', phonebookRouter)
+app.use('/info', (req, res, next) => {
+  Phonebook.count()
+    .then((count) => res.status(200).type('html').send(`<p>Phonebook has info for ${count}</p><br>${new Date()}`))
+    .catch((err) => {
+      next(err)
+    })
+})
 app.use(unknowRouteHandler)
 app.use(errorHandler)
 

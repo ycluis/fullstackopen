@@ -8,11 +8,11 @@ const phonebookSchema = new mongoose.Schema({
     minLength: 8,
     validate: {
       validator: function (v) {
-        const numFormat = v.split('-')
-        if (numFormat.length === 1 || numFormat.length > 2) {
+        const numberFormat = v.split('-')
+        if (numberFormat.length === 1 || numberFormat.length > 2) {
           return false
         }
-        if (numFormat[0].length < 2 || numFormat[0].length > 3) {
+        if (numberFormat[0].length < 2 || numberFormat[0].length > 3) {
           return false
         }
         return true
