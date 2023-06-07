@@ -17,17 +17,27 @@ const Blog = ({ blog, user, handleLikesPutReq, handleDelete }) => {
   }
 
   return (
-    <div style={blogListStyle}>
+    <div style={blogListStyle} className="blog-wrapper">
       <p className="blog_title">
-        {blog.title} <button onClick={setVisibility}>{!showBlogDetail ? 'show' : 'hide'}</button>
+        {blog.title}{' '}
+        <button onClick={setVisibility} className="blog_visibility_btn">
+          {!showBlogDetail ? 'show' : 'hide'}
+        </button>
       </p>
       <div style={{ display: showBlogDetail ? '' : 'none' }} className="blog_details">
         <p>{blog.url}</p>
-        <p>
-          Likes: {blog.likes} <button onClick={() => handleLikesPutReq(blog)}>likes</button>
+        <p className="blog_likes_count">
+          Likes: {blog.likes}{' '}
+          <button onClick={() => handleLikesPutReq(blog)} className="blog_likes_btn">
+            likes
+          </button>
         </p>
         <p>{blog.author}</p>
-        <button style={{ display: user.id === blog.user ? '' : 'none' }} onClick={() => handleDelete(blog)}>
+        <button
+          className="blog_remove_btn"
+          style={{ display: user.id === blog.user ? '' : 'none' }}
+          onClick={() => handleDelete(blog)}
+        >
           remove
         </button>
       </div>

@@ -2,7 +2,8 @@
     "env": {
         "commonjs": true,
         "es2021": true,
-        "node": true
+        "node": true,
+        "cypress/globals": true
     },
     "extends": [
         "react-app",
@@ -14,7 +15,8 @@
         "ecmaVersion": "latest"
     },
     "plugins": [
-        "json-format"
+        "json-format",
+        "cypress"
     ],
     "rules": {
         "camelcase": "off",

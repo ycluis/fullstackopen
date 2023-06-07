@@ -25,6 +25,9 @@ app.use(tokenHandler)
 app.use('/api/blogs', userIdenHandler, require('./controllers/blogs'))
 app.use('/api/users', require('./controllers/users'))
 app.use('/api/login', require('./controllers/login'))
+if (process.env.NODE_ENV === 'test') {
+  app.use('/api/testing', require('./controllers/e2e'))
+}
 app.use(errorHandler)
 
 module.exports = app
