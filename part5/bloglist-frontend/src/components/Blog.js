@@ -18,10 +18,10 @@ const Blog = ({ blog, user, handleLikesPutReq, handleDelete }) => {
 
   return (
     <div style={blogListStyle}>
-      <p>
+      <p className="blog_title">
         {blog.title} <button onClick={setVisibility}>{!showBlogDetail ? 'show' : 'hide'}</button>
       </p>
-      <div style={{ display: showBlogDetail ? '' : 'none' }}>
+      <div style={{ display: showBlogDetail ? '' : 'none' }} className="blog_details">
         <p>{blog.url}</p>
         <p>
           Likes: {blog.likes} <button onClick={() => handleLikesPutReq(blog)}>likes</button>
