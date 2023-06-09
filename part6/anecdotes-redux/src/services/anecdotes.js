@@ -12,5 +12,10 @@ const createNewAnecdote = async (newAnecdote) => {
   return res.data
 }
 
+const voteAnecdote = async (anecdote) => {
+  const res = await axios.put(`${baseUrl}/${anecdote.id}`, anecdote)
+  return res.data
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAllAnecdotes, createNewAnecdote }
+export default { getAllAnecdotes, createNewAnecdote, voteAnecdote }
