@@ -1,3 +1,6 @@
+import { useContext } from 'react'
+import NotificationContext from '../context/NotificationContext'
+
 const Notification = () => {
   const style = {
     border: 'solid',
@@ -6,10 +9,13 @@ const Notification = () => {
     marginBottom: 5,
   }
 
-  // eslint-disable-next-line no-constant-condition
-  if (true) return null
+  const [msg] = useContext(NotificationContext)
 
-  return <div style={style}></div>
+  if (msg !== '') {
+    return <div style={style}>{msg}</div>
+  }
+
+  return null
 }
 
 export default Notification

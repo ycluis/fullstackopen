@@ -4,12 +4,22 @@ import { getAnecdotes, voteAnecdote } from './requests'
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 
+import { useContext } from 'react'
+import NotificationContext from './context/NotificationContext'
+
 const App = () => {
+  // eslint-disable-next-line no-unused-vars
+  const [msg, dispatch] = useContext(NotificationContext)
+
   const queryClient = useQueryClient()
 
   const updateAnecdotesMutation = useMutation(voteAnecdote, {
-    onSuccess: () => {
+    onSuccess: (updatedAnecdote) => {
       queryClient.invalidateQueries('anecdotes')
+      dispatch({ type: 'SHOW', payload: `anecdote '${updatedAnecdote.content}' voted` })
+      setTimeout(() => {
+        dispatch({ type: 'HIDE' })
+      }, 5000)
     },
   })
 
@@ -18,7 +28,7 @@ const App = () => {
     updateAnecdotesMutation.mutate(newAnecdote)
   }
 
-  const res = useQuery('anecdotes', getAnecdotes, { retry: 3 })
+  const res = useQuery('anecdotes', getAnecdotes, { retry: 3, refetchOnWindowFocus: false })
 
   if (res.isLoading) {
     return <div>Loading data...</div>
