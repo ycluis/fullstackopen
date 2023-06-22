@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
 import { setBlogs, addNewBlog } from '../reducers/blogReducer'
-import { setUser } from '../reducers/userReducer'
+import { setLogin } from '../reducers/loginReducer'
 
 import Notification from './Notification'
 import Toggle from './Toggle'
@@ -17,9 +17,9 @@ const BlogContainer = () => {
   const dispatch = useDispatch()
   const notification = useSelector((state) => state.notification)
   const blogs = useSelector((state) => state.blogs)
-  const user = useSelector((state) => state.user)
+  const login = useSelector((state) => state.login)
 
-  const [login, setLogin] = useState({ username: '', password: '' })
+  const [loginForm, setLoginForm] = useState({ username: '', password: '' })
   // eslint-disable-next-line no-unused-vars
   const [token, setToken] = useState(null)
 
@@ -37,19 +37,19 @@ const BlogContainer = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      dispatch(setUser(user))
+      dispatch(setLogin(user))
       setToken(user.token)
       blogService.setToken(user.token)
     }
   }, [dispatch])
 
   const clearUserForm = () => {
-    setLogin({ username: '', password: '' })
+    setLoginForm({ username: '', password: '' })
   }
 
   const handleLoginFieldChange = (e) => {
-    const copy = { ...login }
-    setLogin({
+    const copy = { ...loginForm }
+    setLoginForm({
       ...copy,
       [e.target.name]: e.target.value,
     })
@@ -59,11 +59,11 @@ const BlogContainer = () => {
     e.preventDefault()
 
     try {
-      if (!login.username || !login.password) {
+      if (!loginForm.username || !loginForm.password) {
         window.alert('Please fill in all the fields')
       } else {
-        const user = await loginService.login(login)
-        dispatch(setUser(user))
+        const user = await loginService.login(loginForm)
+        dispatch(setLogin(user))
         setToken(user.token)
         blogService.setToken(user.token)
         window.localStorage.setItem('loggedUser', JSON.stringify(user))
@@ -73,14 +73,6 @@ const BlogContainer = () => {
       clearUserForm()
       dispatch(notify('error', err.response.data.error, 3000))
     }
-  }
-
-  const handleLogout = () => {
-    window.localStorage.removeItem('loggedUser')
-    dispatch(setUser(null))
-    setToken(null)
-    blogService.setToken('')
-    clearUserForm()
   }
 
   const submitNewBlog = async (newBlog) => {
@@ -133,27 +125,24 @@ const BlogContainer = () => {
   const copy = [...blogs]
   return (
     <div>
-      {!user && (
+      {!login && (
         <>
           <h3>Log in to application</h3>
           <Notification notification={notification} />
           <Toggle label="login">
-            <Login login={login} handleLoginFieldChange={handleLoginFieldChange} handleLogin={handleLogin} />
+            <Login login={loginForm} handleLoginFieldChange={handleLoginFieldChange} handleLogin={handleLogin} />
           </Toggle>
         </>
       )}
 
-      {user !== null && (
+      {login !== null && (
         <>
           <h2>Blogs</h2>
           <Notification notification={notification} />
-          <p>
-            {user?.username} logged in <button onClick={handleLogout}>logout</button>
-          </p>
           <Toggle label="New blog" ref={blogFormRef}>
             <BlogForm submitNewBlog={submitNewBlog} />
           </Toggle>
-          <BlogList blogs={copy} user={user} handleLikesPutReq={handleLikesPutReq} handleDelete={handleDelete} />
+          <BlogList blogs={copy} user={login} handleLikesPutReq={handleLikesPutReq} handleDelete={handleDelete} />
         </>
       )}
     </div>

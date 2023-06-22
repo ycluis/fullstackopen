@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export const setUser = (data) => {
+export const setUsers = (data) => {
   return async (dispatch) => {
     dispatch(setUserState(data))
   }
 }
 
-const userSlice = createSlice({
-  name: 'user',
+const usersSlice = createSlice({
+  name: 'users',
   initialState: null,
   reducers: {
     setUserState(_state, action) {
@@ -16,5 +16,5 @@ const userSlice = createSlice({
   },
 })
 
-export const { setUserState } = userSlice.actions
-export default userSlice.reducer
+export const { setUserState } = usersSlice.actions
+export default usersSlice.reducer

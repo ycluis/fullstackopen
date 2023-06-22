@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 const Blog = ({ blog, user, handleLikesPutReq, handleDelete }) => {
   const blogListStyle = {
@@ -18,12 +19,14 @@ const Blog = ({ blog, user, handleLikesPutReq, handleDelete }) => {
 
   return (
     <div style={blogListStyle} className="blog-wrapper">
-      <p className="blog_title">
-        {blog.title}{' '}
-        <button onClick={setVisibility} className="blog_visibility_btn">
-          {!showBlogDetail ? 'show' : 'hide'}
-        </button>
-      </p>
+      <Link to={`/blogs/${blog.id}`}>
+        <p className="blog_title">
+          {blog.title}{' '}
+          <button onClick={setVisibility} className="blog_visibility_btn">
+            {!showBlogDetail ? 'show' : 'hide'}
+          </button>
+        </p>
+      </Link>
       <div style={{ display: showBlogDetail ? '' : 'none' }} className="blog_details">
         <p>{blog.url}</p>
         <p className="blog_likes_count">

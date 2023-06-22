@@ -3,33 +3,31 @@ import { Routes, Route, useMatch } from 'react-router-dom'
 import BlogContainer from './components/BlogContainer'
 import Users from './components/Users'
 import UserDetail from './components/UserDetail'
+import BlogDetail from './components/BlogDetail'
+import Menu from './components/Menu'
 
-import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from 'react'
-import userService from './services/users'
-import { setUserListing } from './reducers/userListReducer'
+import { useSelector } from 'react-redux'
 
 const App = () => {
-  const dispatch = useDispatch()
-  const userlist = useSelector((state) => state.userlist)
+  const users = useSelector((state) => state.users)
+  const blogs = useSelector((state) => state.blogs)
 
-  useEffect(() => {
-    const fetchAllUsers = async () => {
-      const users = await userService.getAllUsers()
-      dispatch(setUserListing(users.data))
-    }
-    fetchAllUsers()
-  }, [dispatch])
+  const userMatch = useMatch('/users/:id')
+  const user = userMatch ? (users !== null ? users.find((user) => user.id === userMatch.params.id) : null) : null
 
-  const match = useMatch('/users/:id')
-  const user = match ? (userlist !== null ? userlist.find((user) => user.id === match.params.id) : null) : null
+  const blogMatch = useMatch('/blogs/:id')
+  const blog = blogMatch ? (blogs !== null ? blogs.find((user) => user.id === blogMatch.params.id) : null) : null
 
   return (
-    <Routes>
-      <Route path="/" element={<BlogContainer />}></Route>
-      <Route path="/users" element={<Users />}></Route>
-      <Route path="/users/:id" element={<UserDetail user={user} />}></Route>
-    </Routes>
+    <>
+      <Menu />
+      <Routes>
+        <Route path="/" element={<BlogContainer />}></Route>
+        <Route path="/users" element={<Users />}></Route>
+        <Route path="/users/:id" element={<UserDetail user={user} />}></Route>
+        <Route path="/blogs/:id" element={<BlogDetail blog={blog} />}></Route>
+      </Routes>
+    </>
   )
 }
 
