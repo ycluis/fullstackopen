@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "62aee8baed130a568b5a6aa3",
+    "title": "Dying of the Light",
+    "author": "George R. R. Martin",
+    "url": "https://www.thriftbooks.com/w/absalom-absalom-by-william-faulkner/249203/?clickref=1100lwNWFkX6",
+    "likes": "5",
+    "user": "62aeef7f39985818a437c4d4"
+  },
+  {
+    "_id": "62aeefa039985818a437c4d8",
+    "title": "East of Eden",
+    "author": "John Steinbeck",
+    "url": "https://www.thriftbooks.com/w/absalom-absalom-by-william-faulkner/249203/?clickref=1100lwNWFkX6",
+    "likes": "10",
+    "user": "62aeef7f39985818a437c4d4"
+  },
+  {
+    "_id": "62aeefaf39985818a437c4da",
+    "title": "Endless Night",
+    "author": "Agatha Christie",
+    "url": "https://www.thriftbooks.com/w/absalom-absalom-by-william-faulkner/249203/?clickref=1100lwNWFkX6",
+    "likes": "20",
+    "user": "62aeef7f39985818a437c4d4"
+  }
+]

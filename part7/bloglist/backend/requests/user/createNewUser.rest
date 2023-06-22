@@ -1,0 +1,8 @@
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "cypress",
+  "name": "Cypress E2E",
+  "password": "12345"
+}

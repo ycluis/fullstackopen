@@ -1,0 +1,16 @@
+[
+  {
+    "_id": "62aeef7f39985818a437c4d4",
+    "username": "jordana",
+    "name": "Jordana Candelaria Lukić",
+    "password": "$2b$10$XUFJRIbD1Y/1BIrF8AdoK.WpxN2fEBNkSCVpcNbQfPJd4PXyGpbPK",
+    "blogs": ["62aee8baed130a568b5a6aa3", "62aeefa039985818a437c4d8", "62aeefaf39985818a437c4da"]
+  },
+  {
+    "_id": "62aeef9439985818a437c4d6",
+    "username": "brian",
+    "name": "Brian Agrippina Green",
+    "password": "$2b$10$XUFJRIbD1Y/1BIrF8AdoK.WpxN2fEBNkSCVpcNbQfPJd4PXyGpbPK",
+    "blogs": []
+  }
+]
