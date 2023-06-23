@@ -16,7 +16,7 @@ const App = () => {
   const user = userMatch ? (users !== null ? users.find((user) => user.id === userMatch.params.id) : null) : null
 
   const blogMatch = useMatch('/blogs/:id')
-  const blog = blogMatch ? (blogs !== null ? blogs.find((user) => user.id === blogMatch.params.id) : null) : null
+  const blog = blogMatch ? (blogs !== null ? blogs.find((blog) => blog.id === blogMatch.params.id) : null) : null
 
   return (
     <>

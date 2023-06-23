@@ -7,10 +7,13 @@ const mongoose = require('mongoose')
 
 const blogModel = require('./models/blog')
 const userModel = require('./models/user')
+const commentModel = require('./models/comment')
 
 const blog = JSON.parse(fs.readFileSync(path.join(__dirname, '/_data/blog.json'), 'utf-8'))
 
 const user = JSON.parse(fs.readFileSync(path.join(__dirname, '/_data/user.json'), 'utf-8'))
+
+const comment = JSON.parse(fs.readFileSync(path.join(__dirname, '/_data/comment.json'), 'utf-8'))
 
 const connectDb = async () => {
   const conn = await mongoose.connect(config.MONGO_URI)
@@ -23,6 +26,7 @@ const importDbData = async () => {
     await connectDb()
     await blogModel.create(blog)
     await userModel.create(user)
+    await commentModel.create(comment)
     console.log(`Data imported successfully`)
     process.exit()
   } catch (err) {
@@ -35,6 +39,7 @@ const deleteDbData = async () => {
     await connectDb()
     await blogModel.deleteMany()
     await userModel.deleteMany()
+    await commentModel.deleteMany()
     console.log(`Data deleted successfully`)
     process.exit()
   } catch (err) {
