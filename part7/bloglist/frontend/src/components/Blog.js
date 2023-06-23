@@ -1,8 +1,8 @@
-import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import Button from '@mui/material/Button'
 
-const Blog = ({ blog, user, handleLikesPutReq, handleDelete }) => {
+const Blog = ({ blog }) => {
   const blogListStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -11,48 +11,17 @@ const Blog = ({ blog, user, handleLikesPutReq, handleDelete }) => {
     marginBottom: 5,
   }
 
-  const [showBlogDetail, setShowBlogDetail] = useState(false)
-
-  const setVisibility = () => {
-    setShowBlogDetail(!showBlogDetail)
-  }
-
   return (
     <div style={blogListStyle} className="blog-wrapper">
-      <Link to={`/blogs/${blog.id}`}>
-        <p className="blog_title">
-          {blog.title}{' '}
-          <button onClick={setVisibility} className="blog_visibility_btn">
-            {!showBlogDetail ? 'show' : 'hide'}
-          </button>
-        </p>
-      </Link>
-      <div style={{ display: showBlogDetail ? '' : 'none' }} className="blog_details">
-        <p>{blog.url}</p>
-        <p className="blog_likes_count">
-          Likes: {blog.likes}{' '}
-          <button onClick={() => handleLikesPutReq(blog)} className="blog_likes_btn">
-            likes
-          </button>
-        </p>
-        <p>{blog.author}</p>
-        <button
-          className="blog_remove_btn"
-          style={{ display: user.id === blog.user ? '' : 'none' }}
-          onClick={() => handleDelete(blog)}
-        >
-          remove
-        </button>
-      </div>
+      <Button color="inherit" component={Link} to={`/blogs/${blog.id}`}>
+        {blog.title}
+      </Button>
     </div>
   )
 }
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
-  handleLikesPutReq: PropTypes.func.isRequired,
-  handleDelete: PropTypes.func.isRequired,
 }
 
 export default Blog

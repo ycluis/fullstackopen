@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { setUsers } from '../reducers/userReducer'
 import { setLogin } from '../reducers/loginReducer'
+import { Button, Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@mui/material'
 
 import userService from '../services/users'
 
@@ -31,10 +32,25 @@ const Users = () => {
     <div>
       {login !== null && (
         <>
-          <h2>Blogs</h2>
-          <p>{login?.username} logged in</p>
           <h3>Users</h3>
-          <table>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableBody>
+                {users !== null &&
+                  users.map((user) => (
+                    <TableRow key={user.id}>
+                      <TableCell>
+                        <Button color="inherit" component={Link} to={`/users/${user.id}`}>
+                          {user.username}
+                        </Button>
+                      </TableCell>
+                      <TableCell>Blog Created: {user.blogs.length}</TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          {/* <table>
             <tbody>
               <tr>
                 <th></th>
@@ -44,13 +60,15 @@ const Users = () => {
                 users.map((user) => (
                   <tr key={user.id}>
                     <td>
-                      <Link to={`/users/${user.id}`}>{user.username}</Link>
+                      <Button color="inherit" component={Link} to={`/users/${user.id}`}>
+                        {user.username}
+                      </Button>
                     </td>
                     <td>{user.blogs.length}</td>
                   </tr>
                 ))}
             </tbody>
-          </table>
+          </table> */}
         </>
       )}
     </div>

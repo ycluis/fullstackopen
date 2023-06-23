@@ -6,12 +6,18 @@ const UserDetail = ({ user }) => {
   return (
     <div>
       <h3>{user.username}</h3>
-      <p>added blogs</p>
-      <ul>
-        {user.blogs.map((blog) => (
-          <li key={blog.id}>{blog.title}</li>
-        ))}
-      </ul>
+      {user.blogs.length > 0 ? (
+        <>
+          <p>Added blogs</p>
+          <ul>
+            {user.blogs.map((blog) => (
+              <li key={blog.id}>{blog.title}</li>
+            ))}
+          </ul>
+        </>
+      ) : (
+        <h3>No blog yet..</h3>
+      )}
     </div>
   )
 }

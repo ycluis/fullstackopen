@@ -13,6 +13,8 @@ import BlogList from './BlogList'
 import blogService from '../services/blogs'
 import loginService from '../services/login'
 
+import Typography from '@mui/material/Typography'
+
 const BlogContainer = () => {
   const dispatch = useDispatch()
   const notification = useSelector((state) => state.notification)
@@ -127,7 +129,9 @@ const BlogContainer = () => {
     <div>
       {!login && (
         <>
-          <h3>Log in to application</h3>
+          <Typography variant="h5" style={{ margin: '0.5em' }}>
+            Log in to application
+          </Typography>
           <Notification notification={notification} />
           <Toggle label="login">
             <Login login={loginForm} handleLoginFieldChange={handleLoginFieldChange} handleLogin={handleLogin} />
@@ -137,7 +141,9 @@ const BlogContainer = () => {
 
       {login !== null && (
         <>
-          <h2>Blogs</h2>
+          <Typography variant="h5" style={{ margin: '0.5em' }}>
+            Blogs
+          </Typography>
           <Notification notification={notification} />
           <Toggle label="New blog" ref={blogFormRef}>
             <BlogForm submitNewBlog={submitNewBlog} />

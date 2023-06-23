@@ -1,31 +1,37 @@
 import PropTypes from 'prop-types'
 
+import { Button, TextField } from '@mui/material'
+
 const Login = ({ login, handleLoginFieldChange, handleLogin }) => {
   return (
     <form onSubmit={handleLogin}>
       <div>
-        username
-        <input
+        <TextField
+          size="small"
+          label="username"
           type="text"
           value={login.username}
           name="username"
           onChange={handleLoginFieldChange}
           className="login_username"
+          margin="dense"
         />
       </div>
       <div>
-        password
-        <input
+        <TextField
+          size="small"
+          label="password"
           type="password"
           value={login.password}
           name="password"
           onChange={handleLoginFieldChange}
           className="login_password"
+          margin="dense"
         />
       </div>
-      <button type="submit" className="login_btn">
+      <Button type="submit" className="login_btn" size="small" variant="contained" style={{ marginTop: '0.5em' }}>
         login
-      </button>
+      </Button>
     </form>
   )
 }

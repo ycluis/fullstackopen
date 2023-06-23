@@ -60,7 +60,7 @@ blogRouter.put('/:id', async (req, res, next) => {
 
     const newObj = {
       ...req.body,
-      user: req.user._id,
+      user: blog.user,
       comments: blog.comments.map((comment) => comment._id),
     }
 
