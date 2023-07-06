@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { setUsers } from '../reducers/userReducer'
 import { setLogin } from '../reducers/loginReducer'
-import { Button, Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@mui/material'
+import { Button, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Typography } from '@mui/material'
 
 import userService from '../services/users'
 
@@ -32,7 +32,9 @@ const Users = () => {
     <div>
       {login !== null && (
         <>
-          <h3>Users</h3>
+          <Typography variant="h5" style={{ margin: '0.5em' }}>
+            Users
+          </Typography>
           <TableContainer component={Paper}>
             <Table>
               <TableBody>
